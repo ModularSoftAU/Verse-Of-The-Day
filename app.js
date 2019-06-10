@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('./config.json');
+// const config = require('./config.json');
 const request = require('request');
 const package = require('./package.json');
 const chalk = require('chalk');
