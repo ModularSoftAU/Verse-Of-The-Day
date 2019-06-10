@@ -1,0 +1,64 @@
+const Discord = require('discord.js');
+const config = require('./config.json');
+const request = require('request');
+const package = require('./package.json');
+const chalk = require('chalk');
+const fetch = require('node-fetch');
+const cron = require('node-cron');
+const client = new Discord.Client({disableEveryone: true});
+
+client.on('ready', async () => {
+  console.log(chalk.yellow(`\nYouVersion Verse Of The Day\n`) + chalk.green('Created By: ') + package.author + '\n' + chalk.green('GitHub Repository: ') + package.homepage + '\n');
+
+  let pluralnonpluralservers = (client.guilds.size > 1) ? 'Servers' : 'Server';
+  let pluralnonpluralusers = (client.users.size > 1) ? 'Users' : 'User';
+  setActivity(); setInterval(setActivity, 60000);
+
+  function setActivity() {
+    // Sets Activity in a rotation
+    const Gameinfo = [`Using ${(((process.memoryUsage().heapUsed)/1024)/1024).toFixed(0)}MBs of RAM`, 'Developer: shadowolf#9212', `Running on ${client.guilds.size} ${pluralnonpluralservers}`, `Running for ${client.users.size} ${pluralnonpluralusers}`, `at ${process.env.hour || config.hour}:${process.env.minute || config.minute}`];
+    var info = Gameinfo[Math.floor(Math.random() * Gameinfo.length)];
+
+    client.user.setActivity(info);
+    console.log(chalk.yellow('[Console]') + ` Activity set to (${info})`);
+  }
+});
+
+function getDayOfYear() {
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+  var oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
+};
+
+function getFullDate() {
+  var date = new Date();
+  var dayofweek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var day = date.getUTCDay();
+  var monthofyear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var year = date.getUTCFullYear();
+  return dayofweek[date.getDay()] + ' ' + day + ' ' + monthofyear[date.getMonth()] + ' ' + year;
+}
+
+cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || config.hour} * * *`, () => {
+  fetch(`https://developers.youversionapi.com/1.0/verse_of_the_day/${getDayOfYear()}?version_id=206`, {
+    headers: {
+        'X-YouVersion-Developer-Token': `${process.env.youversiontoken || config.youversiontoken}`,
+        'Accept-Language': 'en',
+        Accept: 'application/json',
+    }
+  }).then((result) => result.json()).then((json) => {
+    let embed = new Discord.RichEmbed()
+      .setTitle(`Verse Of The Day`)
+      .setColor('#ffff66')
+      .setDescription(json.verse.text)
+      .setFooter(json.verse.human_reference + ' // ' + getFullDate())
+
+    let sendchannel = client.channels.find(c => c.name === process.env.messagechannel || config.messagechannel);
+    if (!sendchannel) return;
+    sendchannel.send(embed);
+  });
+});
+
+client.login(process.env.discordtoken || config.discordtoken);
