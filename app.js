@@ -71,7 +71,7 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
           let sendchannel = guild.channels.find(channel => channel.name === process.env.messagechannel);
           if (!sendchannel) return;
           sendchannel.send(embed);
-        }
+        })
         // guild.defaultChannel.send("messageToSend"));
       } catch (err) {
         console.log("Could not send message to " + guild.name);
@@ -79,9 +79,9 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
 
     // TODO: The channel name defination doesn't use both the process and the config.
     // || config.messagechannel
-    let sendchannel = client.channels.find(channel => channel.name === process.env.messagechannel);
-    if (!sendchannel) return;
-    sendchannel.send(embed);
+    // let sendchannel = client.channels.find(channel => channel.name === process.env.messagechannel);
+    // if (!sendchannel) return;
+    // sendchannel.send(embed);
   });
 }, {
   timezone: "Australia/Sydney"
