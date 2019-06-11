@@ -64,7 +64,9 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
       .setDescription(json.verse.text)
       .setFooter(json.verse.human_reference + ' // ' + getFullDate())
 
-    let sendchannel = client.channels.find(channel => channel.name === process.env.messagechannel || config.messagechannel);
+    // TODO: The channel name defination doesn't use both the process and the config.
+    // || config.messagechannel
+    let sendchannel = client.channels.find(channel => channel.name === process.env.messagechannel);
     if (!sendchannel) return;
     sendchannel.send(embed);
   });
