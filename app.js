@@ -64,6 +64,19 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
       .setDescription(json.verse.text)
       .setFooter(json.verse.human_reference + ' // ' + getFullDate())
 
+
+      var guildList = client.guilds.array();
+      try {
+        guildList.forEach(guild => {
+          let sendchannel = guild.channels.find(channel => channel.name === process.env.messagechannel);
+          if (!sendchannel) return;
+          sendchannel.send(embed);
+        }
+        // guild.defaultChannel.send("messageToSend"));
+      } catch (err) {
+        console.log("Could not send message to " + guild.name);
+      };
+
     // TODO: The channel name defination doesn't use both the process and the config.
     // || config.messagechannel
     let sendchannel = client.channels.find(channel => channel.name === process.env.messagechannel);
