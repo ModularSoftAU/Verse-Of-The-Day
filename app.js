@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-// const config = require('./config.json');
+const config = require('./config.json');
 const request = require('request');
 const package = require('./package.json');
 const chalk = require('chalk');
@@ -24,6 +24,9 @@ client.on('ready', async () => {
   }
 });
 
+//
+// Get the day of year that YouVersion should display
+//
 function getDayOfYear() {
   var now = new Date();
   var start = new Date(now.getFullYear(), 0, 0);
@@ -32,15 +35,21 @@ function getDayOfYear() {
   return Math.floor(diff / oneDay);
 };
 
+//
+// Get today's full date [Tueday 11 June 2019]
+//
 function getFullDate() {
   var date = new Date();
   var dayofweek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   var day = date.getUTCDay();
   var monthofyear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var year = date.getUTCFullYear();
-  return dayofweek[date.getDay()] + ' ' + day + ' ' + monthofyear[date.getMonth()] + ' ' + year;
+  return dayofweek[date.getDay()] + ' ' + day + ', ' + monthofyear[date.getMonth()] + ' ' + year;
 }
 
+//
+// The main code that runs once a day at a configured time.
+//
 cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || config.hour} * * *`, () => {
   fetch(`https://developers.youversionapi.com/1.0/verse_of_the_day/${getDayOfYear()}?version_id=206`, {
     headers: {
@@ -55,10 +64,13 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
       .setDescription(json.verse.text)
       .setFooter(json.verse.human_reference + ' // ' + getFullDate())
 
-    let sendchannel = client.channels.find(c => c.name === process.env.messagechannel || config.messagechannel);
+    let sendchannel = client.channels.find(channel => channel.name === process.env.messagechannel || config.messagechannel);
     if (!sendchannel) return;
     sendchannel.send(embed);
   });
+}, {
+  scheduled: true,
+  timezone: "Australia/Sydney"
 });
 
 client.login(process.env.discordtoken || config.discordtoken);
