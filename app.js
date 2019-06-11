@@ -16,7 +16,7 @@ client.on('ready', async () => {
 
   function setActivity() {
     // Sets Activity in a rotation
-    const Gameinfo = [`Using ${(((process.memoryUsage().heapUsed)/1024)/1024).toFixed(0)}MBs of RAM`, 'Developer: shadowolf#9212', `Running on ${client.guilds.size} ${pluralnonpluralservers}`, `Running for ${client.users.size} ${pluralnonpluralusers}`, `at ${process.env.hour || config.hour}:${process.env.minute || config.minute}`];
+    const Gameinfo = [`Using ${(((process.memoryUsage().heapUsed)/1024)/1024).toFixed(0)}MBs of RAM`, 'Developer: shadowolf#9212', `Running on ${client.guilds.size} ${pluralnonpluralservers}`, `Running for ${client.users.size} ${pluralnonpluralusers}`, `Running daily at ${process.env.hour || config.hour}:${process.env.minute || config.minute}`];
     var info = Gameinfo[Math.floor(Math.random() * Gameinfo.length)];
 
     client.user.setActivity(info);
@@ -69,7 +69,6 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
     sendchannel.send(embed);
   });
 }, {
-  scheduled: true,
   timezone: "Australia/Sydney"
 });
 
