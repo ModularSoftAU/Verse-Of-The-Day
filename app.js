@@ -39,7 +39,7 @@ function getDayOfYear() {
 // Get today's full date [Tueday 11 June 2019]
 //
 function getFullDate() {
-  var date = new Date();
+  var date = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
   var dayofweek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   var day = date.getUTCDay();
   var monthofyear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
