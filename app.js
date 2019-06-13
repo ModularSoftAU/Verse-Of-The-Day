@@ -69,7 +69,7 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
       var guildList = client.guilds.array();
       try {
         guildList.forEach(guild => {
-          let sendchannel = guild.channels.find(channel => channel.name === config.messagechannel);
+          let sendchannel = guild.channels.find(channel => channel.name === process.env.messagechannel);
           if (!sendchannel) return;
           sendchannel.send(embed);
         });
