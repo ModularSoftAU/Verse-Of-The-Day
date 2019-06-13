@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-// const config = require('./config.json');
+const config = require('./config.json');
 const request = require('request');
 const package = require('./package.json');
 const chalk = require('chalk');
@@ -13,6 +13,8 @@ client.on('ready', async () => {
   let pluralnonpluralservers = (client.guilds.size > 1) ? 'Servers' : 'Server';
   let pluralnonpluralusers = (client.users.size > 1) ? 'Users' : 'User';
   setActivity(); setInterval(setActivity, 60000);
+
+  getFullDate();
 
   function setActivity() {
     // Sets Activity in a rotation
@@ -28,7 +30,7 @@ client.on('ready', async () => {
 // Get the day of year that YouVersion should display
 //
 function getDayOfYear() {
-  var now = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
+  var now = new Date();
   var start = new Date(now.getFullYear(), 0, 0);
   var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
   var oneDay = 1000 * 60 * 60 * 24;
@@ -39,9 +41,9 @@ function getDayOfYear() {
 // Get today's full date [Tueday 11 June 2019]
 //
 function getFullDate() {
-  var date = new Date().toLocaleString("en-AU", {timeZone: "Australia/Sydney"});
+  var date = new Date();
   var dayofweek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var day = date.getUTCDay();
+  var day = date.getDay();
   var monthofyear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var year = date.getUTCFullYear();
   return dayofweek[date.getDay()] + ' ' + day + ', ' + monthofyear[date.getMonth()] + ' ' + year;
@@ -64,26 +66,18 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
       .setDescription(json.verse.text)
       .setFooter(json.verse.human_reference + ' // ' + getFullDate())
 
-
       var guildList = client.guilds.array();
       try {
         guildList.forEach(guild => {
-          let sendchannel = guild.channels.find(channel => channel.name === process.env.messagechannel);
+          let sendchannel = guild.channels.find(channel => channel.name === config.messagechannel);
           if (!sendchannel) return;
           sendchannel.send(embed);
-        })
-        // guild.defaultChannel.send("messageToSend"));
+        });
+        console.log('Successfully sent Verse of the Day to avaliable guilds.');
       } catch (err) {
         console.log("Could not send message to " + guild.name);
       };
-
-    // TODO: The channel name defination doesn't use both the process and the config.
-    // || config.messagechannel
-    // let sendchannel = client.channels.find(channel => channel.name === process.env.messagechannel);
-    // if (!sendchannel) return;
-    // sendchannel.send(embed);
-  });
-}, {
+  })}, {
   timezone: "Australia/Sydney"
 });
 
