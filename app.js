@@ -1,5 +1,5 @@
+require('dotenv').config();
 const Discord = require('discord.js');
-const config = require('./config.json');
 const request = require('request');
 const package = require('./package.json');
 const chalk = require('chalk');
@@ -9,21 +9,6 @@ const client = new Discord.Client({disableEveryone: true});
 
 client.on('ready', async () => {
   console.log(chalk.yellow(`\nYouVersion Verse Of The Day\n`) + chalk.green('Created By: ') + package.author + '\n' + chalk.green('GitHub Repository: ') + package.homepage + '\n');
-
-  let pluralnonpluralservers = (client.guilds.size > 1) ? 'Servers' : 'Server';
-  let pluralnonpluralusers = (client.users.size > 1) ? 'Users' : 'User';
-  setActivity(); setInterval(setActivity, 60000);
-
-  getFullDate();
-
-  function setActivity() {
-    // Sets Activity in a rotation
-    const Gameinfo = [`Using ${(((process.memoryUsage().heapUsed)/1024)/1024).toFixed(0)}MBs of RAM`, 'Developer: shadowolf#9212', `Running on ${client.guilds.size} ${pluralnonpluralservers}`, `Running for ${client.users.size} ${pluralnonpluralusers}`, `Running daily at ${process.env.hour || config.hour}:${process.env.minute || config.minute}`];
-    var info = Gameinfo[Math.floor(Math.random() * Gameinfo.length)];
-
-    client.user.setActivity(info);
-    console.log(chalk.yellow('[Console]') + ` Activity set to (${info})`);
-  }
 });
 
 //
@@ -43,19 +28,22 @@ function getDayOfYear() {
 function getFullDate() {
   var date = new Date();
   var dayofweek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var day = date.getDay();
+  var day = String(date.getDate()).padStart(2, '0');
   var monthofyear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  var year = date.getUTCFullYear();
-  return dayofweek[date.getDay()] + ' ' + day + ', ' + monthofyear[date.getMonth()] + ' ' + year;
+  var month = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var year = date.getFullYear();
+
+  date = dayofweek[date.getDay()] + " " + day + " " + monthofyear[date.getMonth()] + " " + year;
+  return date;
 }
 
 //
 // The main code that runs once a day at a configured time.
 //
-cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || config.hour} * * *`, () => {
+cron.schedule(`${process.env.minute} ${process.env.hour} * * *`, () => {
   fetch(`https://developers.youversionapi.com/1.0/verse_of_the_day/${getDayOfYear()}?version_id=206`, {
     headers: {
-        'X-YouVersion-Developer-Token': `${process.env.youversiontoken || config.youversiontoken}`,
+        'X-YouVersion-Developer-Token': `${process.env.youversiontoken}`,
         'Accept-Language': 'en',
         Accept: 'application/json',
     }
@@ -77,8 +65,7 @@ cron.schedule(`${process.env.minute || config.minute} ${process.env.hour || conf
       } catch (err) {
         console.log("Could not send message to " + guild.name);
       };
-  })}, {
-  timezone: "Australia/Sydney"
+  })
 });
 
-client.login(process.env.discordtoken || config.discordtoken);
+client.login(process.env.discordtoken);
