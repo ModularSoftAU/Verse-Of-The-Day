@@ -13,9 +13,9 @@
   "author": "Ben Robson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/shadowolfyt/Verse-Of-The-Day/issues"
+    "url": "https://github.com/benrobson8/Verse-Of-The-Day/issues"
   },
-  "homepage": "https://github.com/shadowolfyt/Verse-Of-The-Day#readme",
+  "homepage": "https://github.com/benrobson8/Verse-Of-The-Day#readme",
   "dependencies": {
     "chalk": "^2.4.2",
     "discord.js": "^11.5.1",
