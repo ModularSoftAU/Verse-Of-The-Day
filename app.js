@@ -66,6 +66,9 @@ cron.schedule(`${process.env.minute} ${process.env.hour} * * *`, () => {
         console.log("Could not send message to " + guild.name);
       };
   })
+}, {
+  scheduled: true,
+  timezone: "Australia/Sydney"
 });
 
 client.login(process.env.discordtoken);
