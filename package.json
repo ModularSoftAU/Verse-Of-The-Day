@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/benrobson8/Verse-Of-The-Day#readme",
   "dependencies": {
-    "chalk": "^2.4.2",
+    "chalk": "^4.0.0",
     "discord.js": "^11.5.1",
     "dotenv": "^8.1.0",
     "node-cron": "^2.0.3",
