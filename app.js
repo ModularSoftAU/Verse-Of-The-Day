@@ -2,6 +2,7 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const request = require('request');
 const package = require('./package.json');
+const config = require('./config.json');
 const chalk = require('chalk');
 const fetch = require('node-fetch');
 const cron = require('node-cron');
@@ -40,7 +41,7 @@ function getFullDate() {
 //
 // The main code that runs once a day at a configured time.
 //
-cron.schedule(`${process.env.minute} ${process.env.hour} * * *`, () => {
+cron.schedule(`${config.minute} ${config.hour} * * *`, () => {
   fetch(`https://developers.youversionapi.com/1.0/verse_of_the_day/${getDayOfYear()}?version_id=206`, {
     headers: {
         'X-YouVersion-Developer-Token': `${process.env.youversiontoken}`,
@@ -57,11 +58,11 @@ cron.schedule(`${process.env.minute} ${process.env.hour} * * *`, () => {
       var guildList = client.guilds.array();
       try {
         guildList.forEach(guild => {
-          let sendchannel = guild.channels.find(channel => channel.name === process.env.messagechannel);
+          let sendchannel = guild.channels.find(channel => channel.name === config.messagechannel);
           if (!sendchannel) return;
           sendchannel.send(embed);
         });
-        console.log('Successfully sent Verse of the Day to avaliable guilds.');
+        console.log(`[CONSOLE] Sent Verse of the Day to ${guild.name}.`);
       } catch (err) {
         console.log("Could not send message to " + guild.name);
       };
