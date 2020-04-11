@@ -24,7 +24,7 @@ function getDayOfYear() {
 };
 
 //
-// Get today's full date [Tueday 11 June 2019]
+// Get today's full date [Tuesday 11 June 2019]
 //
 function getFullDate() {
   var date = new Date();
@@ -49,7 +49,7 @@ cron.schedule(`${config.minute} ${config.hour} * * *`, () => {
         Accept: 'application/json',
     }
   }).then((result) => result.json()).then((json) => {
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
       .setTitle(`Verse Of The Day`)
       .setColor('#ffff66')
       .setDescription(json.verse.text)
@@ -58,7 +58,7 @@ cron.schedule(`${config.minute} ${config.hour} * * *`, () => {
       var guildList = client.guilds.array();
       try {
         guildList.forEach(guild => {
-          let sendchannel = guild.channels.find(channel => channel.name === config.messagechannel);
+          let sendchannel = guild.channels.cache.find(channel => channel.name === config.messagechannel);
           if (!sendchannel) return;
           sendchannel.send(embed);
         });
