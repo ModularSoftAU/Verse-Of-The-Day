@@ -48,14 +48,14 @@ cron.schedule(`${config.minute} ${config.hour} * * *`, () => {
         'Accept-Language': 'en',
         Accept: 'application/json',
     }
-  }).then((result) => result.json()).then((json) => {
+  }).then((result, client) => result.json()).then((json) => {
     let embed = new Discord.MessageEmbed()
       .setTitle(`Verse Of The Day`)
       .setColor('#ffff66')
       .setDescription(json.verse.text)
       .setFooter(json.verse.human_reference + ' // ' + getFullDate())
 
-      var guildList = client.guilds.array();
+      var guildList = client.guilds.cache.array();
       try {
         guildList.forEach(guild => {
           let sendchannel = guild.channels.cache.find(channel => channel.name === config.messagechannel);
@@ -64,7 +64,7 @@ cron.schedule(`${config.minute} ${config.hour} * * *`, () => {
         });
         console.log(`[CONSOLE] Sent Verse of the Day to ${guild.name}.`);
       } catch (err) {
-        console.log("Could not send message to " + guild.name);
+        console.log(`[ERROR] Could not send message to ${guild.name}.`);
       };
   })
 }, {
