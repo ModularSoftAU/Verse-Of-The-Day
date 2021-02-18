@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benrobson/Verse-Of-The-Day.git"
+    "url": "git+https://github.com/craftingforchrist/Verse-Of-The-Day.git"
   },
   "author": "Ben Robson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/benrobson8/Verse-Of-The-Day/issues"
+    "url": "https://github.com/craftingforchrist/Verse-Of-The-Day/issues"
   },
-  "homepage": "https://github.com/benrobson8/Verse-Of-The-Day#readme",
+  "homepage": "https://github.com/craftingforchrist/Verse-Of-The-Day#readme",
   "dependencies": {
     "chalk": "^4.0.0",
     "discord.js": "^12.5.0",
