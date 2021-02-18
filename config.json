@@ -2,5 +2,6 @@
   "messagechannel": "general",
 
   "hour": "07",
-  "minute": "00"
+  "minute": "00",
+  "debug": false
 }

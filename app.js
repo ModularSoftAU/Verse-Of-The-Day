@@ -42,6 +42,13 @@ function getFullDate() {
 // The main code that runs once a day at a configured time.
 //
 cron.schedule(`${config.minute} ${config.hour} * * *`, () => {
+  broadcastVerseOfTheDay();
+}, {
+  scheduled: true,
+  timezone: "Australia/Sydney"
+});
+
+function broadcastVerseOfTheDay() {
   fetch(`https://developers.youversionapi.com/1.0/verse_of_the_day/${getDayOfYear()}?version_id=206`, {
     headers: {
         'X-YouVersion-Developer-Token': `${process.env.youversiontoken}`,
@@ -66,10 +73,17 @@ cron.schedule(`${config.minute} ${config.hour} * * *`, () => {
       } catch (err) {
         console.log(`[ERROR] Could not send message to ${guild.name}.`);
       };
-  })
-}, {
-  scheduled: true,
-  timezone: "Australia/Sydney"
-});
+  });
+}
+
+// 
+// Debug Mode
+// 
+// Run task every minute if debug is true.
+if (config.debug == true) {
+  cron.schedule(`* * * * *`, () => {
+    broadcastVerseOfTheDay();
+  });
+}
 
 client.login(process.env.discordtoken);
