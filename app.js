@@ -71,7 +71,7 @@ function broadcastVerseOfTheDay() {
         });
         console.log(`[CONSOLE] Sent Verse of the Day to ${guild.name}.`);
       } catch (err) {
-        console.log(`[ERROR] Could not send message to ${guild.name}.`);
+        console.log(`[ERROR] The Verse Of The Day could not be reached to some guilds.`);
       };
   });
 }
