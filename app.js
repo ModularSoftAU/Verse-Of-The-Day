@@ -3,13 +3,12 @@ const Discord = require('discord.js');
 const request = require('request');
 const package = require('./package.json');
 const config = require('./config.json');
-const chalk = require('chalk');
 const fetch = require('node-fetch');
 const cron = require('node-cron');
 const client = new Discord.Client({disableEveryone: true});
 
 client.on('ready', async () => {
-  console.log(chalk.yellow(`\nYouVersion Verse Of The Day\n`) + chalk.green('Created By: ') + package.author + '\n' + chalk.green('GitHub Repository: ') + package.homepage + '\n');
+  console.log(`\nYouVersion Verse Of The Day\n Created By: ` + package.author + `\n GitHub Repository: ` + package.homepage + `\n`);
 });
 
 //
