@@ -17,9 +17,8 @@
   },
   "homepage": "https://github.com/craftingforchrist/Verse-Of-The-Day#readme",
   "dependencies": {
-    "chalk": "^4.0.0",
     "discord.js": "^12.5.3",
-    "dotenv": "^8.2.0",
+    "dotenv": "^9.0.2",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.1",
     "request": "^2.88.2"
