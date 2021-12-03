@@ -1,5 +1,5 @@
 {
-  "name": "verse-of-the-day",
+  "name": "modularenigma-votd",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -8,19 +8,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/craftingforchrist/Verse-Of-The-Day.git"
+    "url": "git+https://github.com/ModularEnigma/Verse-Of-The-Day.git"
   },
-  "author": "Ben Robson",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/craftingforchrist/Verse-Of-The-Day/issues"
+    "url": "https://github.com/ModularEnigma/Verse-Of-The-Day/issues"
   },
-  "homepage": "https://github.com/craftingforchrist/Verse-Of-The-Day#readme",
+  "homepage": "https://github.com/ModularEnigma/Verse-Of-The-Day#readme",
   "dependencies": {
-    "discord.js": "^12.5.3",
-    "dotenv": "^9.0.2",
-    "node-cron": "^3.0.0",
-    "node-fetch": "^2.6.1",
-    "request": "^2.88.2"
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.15",
+    "path": "^0.12.7",
+    "wokcommands": "^1.5.3"
   }
 }
