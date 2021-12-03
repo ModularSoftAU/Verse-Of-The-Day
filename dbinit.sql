@@ -9,4 +9,5 @@ CREATE TABLE config (
   votdTimeHour VARCHAR(2) DEFAULT NULL,
   votdTimeMinute VARCHAR(2) DEFAULT NULL,
   votdTimeTimezone VARCHAR(100) DEFAULT NULL
+  votdVersion VARCHAR(5) DEFAULT "NIV",
 );

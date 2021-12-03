@@ -32,6 +32,19 @@ module.exports = {
             ]
         },
         {
+            "name": "setversion",
+            "description": "Set the Bible Version for the VOTD",
+            "type": 1,
+            "options": [
+                {
+                    "name": "version",
+                    "description": "Version for the VOTD.",
+                    "type": 3,
+                    "required": true
+                }
+            ]
+        },
+        {
             "name": "settime",
             "description": "Set Time to send VOTD daily.",
             "type": 1,
@@ -74,6 +87,7 @@ module.exports = {
                         const embed = new MessageEmbed()
                         .setTitle(`${interaction.guild.name}'s Configuration`)
                         .setColor(`${config.colours.info}`)
+                        .addField(`VOTD Version`, `${results[0].votdVersion}`)
 
                         if (interaction.guild.channels.cache.get(results[0].votdChannel) == undefined) {
                             embed.addField(`VOTD Request Channel`, `\`Not Yet Set\``)
@@ -81,7 +95,7 @@ module.exports = {
                             embed.addField(`VOTD Request Channel`, `${votdChannelDisplayName}`)
                         };
 
-                        if (interaction.guild.channels.cache.get(results[0].prayerRequestLogChannel) == undefined) {
+                        if (interaction.guild.channels.cache.get(results[0].votdTimeTimezone) == undefined) {
                             embed.addField(`VOTD Time(zone)`, `\`Not Yet Set\``)
                         } else {
                             embed.addField(`VOTD Time(zone)`, `${results[0].votdTimeHour}:${results[0].votdTimeMinute} (${results[0].votdTimeTimezone})`)
@@ -117,6 +131,35 @@ module.exports = {
                         .setTitle(`The VOTD channel has been set.`)
                         .setColor(`${config.colours.success}`)
                         .setDescription(`The channel where the VOTD will go has been set to \`${votdChannelDisplayName}\``)
+            
+                        interaction.reply({
+                            embeds: [embed],
+                            ephemeral: true 
+                        });
+                        return
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+                return   
+            }
+        }
+
+        // 
+        // /config setversion
+        // 
+        if (interaction.options.getSubcommand() === "setversion") {
+            const votdVersion = interaction.options.getString('version');
+
+            try {
+                database.query (`SELECT * FROM config WHERE guildID=?; UPDATE config SET votdVersion=? WHERE guildID=?;`, [interaction.guildId, votdVersion, interaction.guildId], function (error, results, fields) {
+                    if (error) {
+                      throw error;
+                    } else {
+                        const embed = new MessageEmbed()
+                        .setTitle(`The VOTD version has been set.`)
+                        .setColor(`${config.colours.success}`)
+                        .setDescription(`The VOTD version \`${votdVersion}\``)
             
                         interaction.reply({
                             embeds: [embed],
